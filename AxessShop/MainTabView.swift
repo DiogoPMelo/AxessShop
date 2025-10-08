@@ -1,0 +1,60 @@
+//
+//  MainTabView.swift
+//  AxessShop
+//
+//  Created by Diogo Melo on 8/10/25.
+//
+
+import SwiftUI
+
+struct MainTabView: View {
+    @StateObject var store = TechStore()
+
+    var body: some View {
+        TabView {
+
+ListView()
+            .tabItem {
+                Label("Store", systemImage: "bag.fill")
+            }
+
+            // 2️⃣ Cart
+        NavigationStack {
+                Text("Cart – To be implemented")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .navigationTitle("Cart")
+            }
+            .tabItem {
+                Label("Cart (\(store.cartCount)", systemImage: "cart.fill")
+            }
+
+            // 3️⃣ Favorites
+            NavigationStack {
+                Text("Favorites – To be implemented")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .navigationTitle("Favorites")
+            }
+            .tabItem {
+                Label("Wishlist (\(store.wishlistCount)", systemImage: "heart.fill")
+            }
+
+            // 4️⃣ Account
+            NavigationStack {
+                Text("Account – To be implemented")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .navigationTitle("Account")
+            }
+            .tabItem {
+                Label("Account", systemImage: "person.crop.circle.fill")
+            }
+        }
+        .environmentObject(store)
+    }
+}
+
+#Preview {
+    MainTabView()
+}

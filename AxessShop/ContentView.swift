@@ -7,16 +7,37 @@
 
 import SwiftUI
 
+struct Article: Codable, Hashable, Identifiable {
+    var id = UUID()
+var name: String
+var price: Double
+
+
+
+}
+
+
+
+
 struct ContentView: View {
+    var articles = [
+        Article(name: "Socks", price: 9.99),
+        Article(name: "shoes", price: 49.99),
+        Article(name: "Jeans", price: 99.99),
+    ]
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List (articles, id: \.self) { item in
+            VStack {
+                Text(item.name)
+                Text("\(item.price)")
+                Button ("Buy") {
+
+                }
+            }
         }
-        .padding()
     }
+
 }
 
 #Preview {
