@@ -19,15 +19,17 @@ struct ListElementView: View {
                 .frame(width: 60, height: 60)
                 .foregroundColor(.accentColor)
 
-            Image(product.imageName)
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 15) {
                 Text(product.name)
                     .font(.headline)
+
                 Text(product.description)
                     .font(.subheadline)
+
                 Text(product.price)
                     .font(.title3)
                     .foregroundColor(.green)
+
                 HStack {
                     ForEach(0..<Int(product.rating.rounded())) { _ in
                         Image(systemName: "star.fill")
@@ -37,7 +39,7 @@ struct ListElementView: View {
             }
             Spacer()
 
-            VStack(spacing: 10) {
+            VStack(spacing: 15) {
                 Button(action: {
                     store.addToCart(product)
                 }) {
