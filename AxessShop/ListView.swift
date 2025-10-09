@@ -13,7 +13,7 @@ struct ListView: View {
     var body: some View {
         NavigationStack {
             List(store.products) { product in
-                NavigationLink(destination: ProductDetailViewV1(product: product)) {
+                NavigationLink(destination: ProductDetailView(product: product)) {
                     ProductListView(product: product)
                 }
             }
