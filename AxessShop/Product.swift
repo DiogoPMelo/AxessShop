@@ -64,6 +64,19 @@ struct Product: Identifiable {
     let price: String
     let rating: Double
     let imageName: String
+
+    var ratingAsString: String {
+
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+
+        if let ratingString = formatter.string(from: NSNumber(value: rating)) {
+            return ratingString
+        }
+
+        return ""
+    }
 }
 
 

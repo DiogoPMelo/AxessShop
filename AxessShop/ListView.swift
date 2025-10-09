@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct ListView: View {
-    let products = Product.mockProducts
+    @EnvironmentObject var store: TechStore
 
     var body: some View {
         NavigationStack {
-            List(products) { product in
-                ListElementView(product: product)
+            List(store.products) { product in
+                NavigationLink(destination: ProductDetailViewV1(product: product)) {
+                    ProductListView(product: product)
+                }
             }
             .navigationTitle("Tech Store")
         }

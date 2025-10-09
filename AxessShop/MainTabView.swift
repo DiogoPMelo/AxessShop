@@ -26,8 +26,9 @@ ListView()
                     .navigationTitle("Cart")
             }
             .tabItem {
-                Label("Cart (\(store.cartCount)", systemImage: "cart.fill")
+                Label("Cart", systemImage: "cart.fill")
             }
+            .badge(store.cartCount)
 
             // 3️⃣ Favorites
             NavigationStack {
@@ -37,8 +38,9 @@ ListView()
                     .navigationTitle("Favorites")
             }
             .tabItem {
-                Label("Wishlist (\(store.wishlistCount)", systemImage: "heart.fill")
+                Label("Wishlist", systemImage: "heart.fill")
             }
+            .badge(store.wishlistCount)
 
             // 4️⃣ Account
             NavigationStack {
