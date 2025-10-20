@@ -43,12 +43,7 @@ ListView()
             .badge(store.wishlistCount)
 
             // 4️⃣ Account
-            NavigationStack {
-                Text("Account – To be implemented")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .navigationTitle("Account")
-            }
+AccountView()
             .tabItem {
                 Label("Account", systemImage: "person.crop.circle.fill")
             }
