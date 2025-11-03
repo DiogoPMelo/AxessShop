@@ -31,12 +31,7 @@ ProductListView()
             .badge(store.cartCount)
 
             // 3️⃣ Favorites
-            NavigationStack {
-                Text("Favorites – To be implemented")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .navigationTitle("Favorites")
-            }
+            WishlistView(store: store)
             .tabItem {
                 Label("Wishlist", systemImage: "heart.fill")
             }
