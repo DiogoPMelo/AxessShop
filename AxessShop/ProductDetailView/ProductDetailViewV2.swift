@@ -10,8 +10,12 @@ import SwiftUI
 struct ProductDetailViewV2: View {
     let product: Product
     @EnvironmentObject var store: TechStore
-    @State private var selectedColor = "blue"
-    @State private var selectedStorage = "256GB"
+
+    @State private var selectedColor = 1
+    let colors: [Color] = [.black, .blue, .red, .gray]
+
+    @State private var selectedStorage = 1
+    let storageOptions = ["128GB", "256GB", "512GB", "1TB"]
 
     var body: some View {
         ScrollView {
@@ -57,10 +61,9 @@ struct ProductDetailViewV2: View {
                         .font(.headline)
 
                     HStack(spacing: 15) {
-                        colorButton("black", color: .black)
-                        colorButton("blue", color: .blue)
-                        colorButton("red", color: .red)
-                        colorButton("gray", color: .gray)
+                        ForEach(colors, id: \.self) {
+                            colorButton($0)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -71,9 +74,9 @@ struct ProductDetailViewV2: View {
                         .font(.headline)
 
                     HStack(spacing: 15) {
-                        storageButton("128GB")
-                        storageButton("256GB")
-                        storageButton("512GB")
+                        ForEach(storageOptions, id: \.self) {
+                            storageButton($0)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -100,7 +103,7 @@ struct ProductDetailViewV2: View {
 
                 // MARK: Selected Configuration
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Your specs: \(selectedColor.capitalized) / \(selectedStorage)")
+                    Text("Your specs: \(colors[selectedColor].description.capitalized) / \(storageOptions[selectedStorage])")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -158,30 +161,30 @@ struct ProductDetailViewV2: View {
 
     // MARK: - Helper Views
 
-    @ViewBuilder private func colorButton(_ id: String, color: Color) -> some View {
+    @ViewBuilder private func colorButton(_ color: Color) -> some View {
         Circle()
             .fill(color)
             .frame(width: 32, height: 32)
             .overlay(
                 Circle()
-                    .stroke(selectedColor == id ? Color.blue : Color.clear, lineWidth: 3)
+                    .stroke(colors[selectedColor] == color ? Color.blue : Color.clear, lineWidth: 3)
             )
             .onTapGesture {
-                selectedColor = id
+                selectedColor = colors.firstIndex(of: color) ?? 0
             }
-            .accessibilityLabel(id.capitalized)
-            .accessibilityAddTraits( id == selectedColor ? [.isButton, .isSelected] : [.isButton])
+            .accessibilityLabel(color.description.capitalized)
+            .accessibilityAddTraits( colors[selectedColor] == color ? [.isButton, .isSelected] : [.isButton])
     }
 
     @ViewBuilder private func storageButton(_ label: String) -> some View {
         Button(label) {
-            selectedStorage = label
+            selectedStorage = storageOptions.firstIndex(of: label) ?? 0
         }
         .padding(10)
         .frame(width: 80)
-        .background(selectedStorage == label ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
+        .background(storageOptions[selectedStorage] == label ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .accessibilityAddTraits(selectedStorage == label ? .isSelected : [])
+        .accessibilityAddTraits(storageOptions[selectedStorage] == label ? .isSelected : [])
     }
 }
 

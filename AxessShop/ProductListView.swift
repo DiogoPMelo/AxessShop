@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct ListView: View {
+struct ProductListView: View {
     @EnvironmentObject var store: TechStore
 
     var body: some View {
         NavigationStack {
             List(store.products) { product in
                 NavigationLink(destination: ProductDetailView(product: product)) {
-                    ProductListView(product: product)
+                    ProductCellView(product: product)
                 }
             }
             .navigationTitle("Tech Store")
@@ -23,5 +23,5 @@ struct ListView: View {
 }
 
 #Preview {
-    ListView()
+    ProductListView()
 }

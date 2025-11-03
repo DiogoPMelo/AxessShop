@@ -1,13 +1,13 @@
 //
-//  ProductDetailViewV1.swift
+//  ProductDetailViewV3.swift
 //  AxessShop
 //
-//  Created by Diogo Melo on 9/10/25.
+//  Created by Diogo Melo on 20/10/25.
 //
 
 import SwiftUI
 
-struct ProductDetailViewV1: View {
+struct ProductDetailViewV3: View {
     let product: Product
     @EnvironmentObject var store: TechStore
 
@@ -29,12 +29,14 @@ struct ProductDetailViewV1: View {
                     .frame(height: 250)
                     .foregroundStyle(.gray)
                     .padding(.top)
+                    .accessibilityHidden(true)
 
                 // MARK: Title, Rating, Price
                 VStack(alignment: .leading, spacing: 8) {
                     Text(product.name)
                         .font(.title)
                         .fontWeight(.bold)
+                        .accessibilityAddTraits(.isHeader)
 
                     // Stars
                     HStack(spacing: 2) {
@@ -44,6 +46,8 @@ struct ProductDetailViewV1: View {
                                 .font(.caption)
                         }
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(product.ratingAsString) stars")
 
                     Text(product.price)
                         .font(.title2)
@@ -63,6 +67,30 @@ struct ProductDetailViewV1: View {
                     }
                 }
                 .padding(.horizontal)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Available colors")
+                .accessibilityValue(colors[selectedColor].description.capitalized)
+                .accessibilityAdjustableAction { direction in
+                    switch (direction) {
+                        case .decrement:
+                            if selectedColor > 0 { selectedColor -= 1}
+
+                        case .increment:
+                            if selectedColor < (colors.count - 1) { selectedColor += 1}
+
+                        default:
+                            break
+                    }
+                }
+                // wasn't focusing with VO swiping in iOS18.7, just with exploring by touch
+                //                .accessibilityRepresentation {
+                //                    Picker("Please choose a color", selection: $selectedColor) {
+                //                        ForEach(colors, id: \.self) {
+                //                            Text($0.description)
+                //                        }
+                //                    }
+                //                    .pickerStyle(.wheel)
+                //                }
 
                 // MARK: Storage Options
                 VStack(alignment: .leading, spacing: 10) {
@@ -77,11 +105,28 @@ struct ProductDetailViewV1: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 5)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Storage Options")
+                .accessibilityValue(storageOptions[selectedStorage])
+                .accessibilityAdjustableAction { direction in
+                    switch (direction) {
+                        case .decrement:
+                            if selectedStorage > 0 { selectedStorage -= 1}
+
+                        case .increment:
+                            if selectedStorage < (storageOptions.count - 1) { selectedStorage += 1}
+
+                        default:
+                            break
+                    }
+                }
 
                 // MARK: Description
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Description")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityHeading( .h2)
 
                     Text("""
                     The \(product.name) delivers extraordinary performance and unmatched design. \
@@ -129,6 +174,8 @@ struct ProductDetailViewV1: View {
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(10)
                         }
+                        .accessibilityLabel("Remove from Wishlist")
+                        .accessibilityAddTraits(.isSelected)
                     } else {
                         Button(action: {
                             store.addToWishlist(product)
@@ -140,6 +187,7 @@ struct ProductDetailViewV1: View {
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(10)
                         }
+                        .accessibilityLabel("Add to Wishlist")
                     }
                 }
                 .padding(.horizontal)
@@ -163,7 +211,8 @@ struct ProductDetailViewV1: View {
             .onTapGesture {
                 selectedColor = colors.firstIndex(of: color) ?? 0
             }
-            .accessibilityElement()
+            .accessibilityLabel(color.description.capitalized)
+            .accessibilityAddTraits( colors[selectedColor] == color ? [.isButton, .isSelected] : [.isButton])
     }
 
     @ViewBuilder private func storageButton(_ label: String) -> some View {
@@ -174,9 +223,10 @@ struct ProductDetailViewV1: View {
         .frame(width: 80)
         .background(storageOptions[selectedStorage] == label ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .accessibilityAddTraits(storageOptions[selectedStorage] == label ? .isSelected : [])
     }
 }
 
 #Preview {
-    ProductDetailViewV1(product: Product.mockProducts[0])
+    ProductDetailViewV3(product: Product.mockProducts[0])
 }

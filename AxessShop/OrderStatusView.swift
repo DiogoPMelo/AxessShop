@@ -105,38 +105,40 @@ struct OrderStatusView: View {
             // PAST STATUS
             VStack(spacing: 8) {
                 Circle()
-                    .fill(Color.green.opacity(0.8))
-                    .frame(width: 20, height: 20)
+                    .strokeBorder(Color.green, lineWidth: 2) // outline instead of filled
+                    .background(Circle().fill(Color.green.opacity(0.1))) // subtle tint
+                    .frame(width: 24, height: 24)
                 Text(status)
                     .font(.subheadline)
-                    .foregroundColor(.green.opacity(0.8))
+                    .foregroundColor(.primary) // use text color with good contrast
             }
-            .accessibilityHint("Past")
+            .accessibilityHint("Past status")
 
         } else if index == currentIndex {
             // CURRENT STATUS
             VStack(spacing: 8) {
                 Circle()
                     .fill(Color.blue)
-                    .frame(width: 20, height: 20)
+                    .frame(width: 24, height: 24)
                 Text(status)
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
             }
-            .accessibilityHint("Current")
+            .accessibilityHint("Current status")
 
         } else {
             // FUTURE STATUS
             VStack(spacing: 8) {
                 Circle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 20, height: 20)
+                    .strokeBorder(Color.gray, lineWidth: 2)
+                    .background(Circle().fill(Color.clear))
+                    .frame(width: 24, height: 24)
                 Text(status)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-            .accessibilityHint("Future")
+            .accessibilityHint("Upcoming status")
         }
     }
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct ProductDetailView: View {
     let product: Product
     var body: some View {
-        ProductDetailViewV2(product: product)
+        ProductDetailViewV3(product: product)
     }
 }
 

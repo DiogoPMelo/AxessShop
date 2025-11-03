@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct ProductListView: View {
+struct ProductCellView: View {
     let product: Product
 
     var body: some View {
-        ProductListViewV2(product: product)
+        ProductCellViewV2(product: product)
     }
 }
 
 #Preview {
-    ProductListView(product: Product.mockProducts[0])
+    ProductCellView(product: Product.mockProducts[0])
 }

@@ -1,14 +1,13 @@
 //
-//  ProductListViewV1.swift
+//  ProductListViewV2.swift
 //  AxessShop
 //
-//  Created by Diogo Melo on 8/10/25.
+//  Created by Diogo Melo on 9/10/25.
 //
 
 import SwiftUI
 
-// First implementation, no accessibility care
-struct ProductListViewV1: View {
+struct ProductCellViewV2: View {
     let product: Product
     @EnvironmentObject var store: TechStore
 
@@ -19,6 +18,7 @@ struct ProductListViewV1: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
                 .foregroundColor(.accentColor)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 15) {
                 Text(product.name)
@@ -37,6 +37,8 @@ struct ProductListViewV1: View {
                             .foregroundColor(.yellow)
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Rating: \(product.ratingAsString) stars")
             }
             Spacer()
 
@@ -46,6 +48,7 @@ struct ProductListViewV1: View {
                 }) {
                     Image(systemName: "cart.badge.plus")
                         .font(.title2)
+                        .accessibilityLabel("Add to Cart")
                 }
 
                 if !store.existsInWishlist(product) {
@@ -55,6 +58,7 @@ struct ProductListViewV1: View {
                     }) {
                         Image(systemName: "heart")
                             .font(.title2)
+                            .accessibilityLabel("Add to Wishlist")
                     }
                 } else {
                     // Already in wishlist
@@ -64,14 +68,28 @@ struct ProductListViewV1: View {
                         Image(systemName: "heart.fill")
                             .font(.title2)
                             .foregroundColor(.red)
+                            .accessibilityLabel("Remove from Wishlist")
                     }
                 }
             }
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityAction(named: !store.existsInWishlist(product) ? "Add to Wishlist" : "Remove from wishlist") {
+            if store.existsInWishlist(product) {
+                store.removeFromWishlist(product)
+            } else {
+                store.addToWishlist(product)
+            }
+        }
+        .accessibilityAction(named: "Add to Cart") {
+            store.addToCart(product)
+        }
+//        .accessibilityAction(.magicTap, {store.addToWishlist(product)})
+//        .accessibilityAction(.escape, {store.removeFromWishlist(product)})
     }
 }
 
 #Preview {
-    ProductListViewV1(product: Product.mockProducts[0])
+    ProductCellViewV2(product: Product.mockProducts[0])
 }
