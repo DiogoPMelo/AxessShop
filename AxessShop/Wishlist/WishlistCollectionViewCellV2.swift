@@ -16,11 +16,12 @@ class WishlistCollectionViewCellV2: UICollectionViewCell {
     private let ratingLabel = UILabel()
     private let removeFromWishlistButton = UIButton(type: .system)
     private let addToCartButton = UIButton(type: .system)
+    private let infoStackView = UIStackView()
     private let stackView = UIStackView()
 
     var onWishlistRemoval: (() -> Void)?
     var onAddToCart: (() -> Void)?
-    var onAccessibilityActivate: (() -> Void)?
+    var onAccessibilityActivate: (() -> Void)? // for V3 compatibility
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,14 +51,22 @@ class WishlistCollectionViewCellV2: UICollectionViewCell {
         addToCartButton.layer.cornerRadius = 5
         addToCartButton.addTarget(self, action: #selector(addCartTapped), for: .touchUpInside)
 
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(priceLabel)
-        stackView.addArrangedSubview(ratingLabel)
-        stackView.addArrangedSubview(removeFromWishlistButton)
-        stackView.addArrangedSubview(addToCartButton)
+        infoStackView.axis = .vertical
+        infoStackView.spacing = 6
+        infoStackView.addArrangedSubview(nameLabel)
+        infoStackView.addArrangedSubview(priceLabel)
+        infoStackView.addArrangedSubview(ratingLabel)
 
+        let buttonsStackView = UIStackView()
+        buttonsStackView.axis = .vertical
+        buttonsStackView.spacing = 8
+        buttonsStackView.addArrangedSubview(removeFromWishlistButton)
+        buttonsStackView.addArrangedSubview(addToCartButton)
+
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.addArrangedSubview(infoStackView)
+        stackView.addArrangedSubview(buttonsStackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
     }
@@ -77,27 +86,17 @@ class WishlistCollectionViewCellV2: UICollectionViewCell {
         priceLabel.text = product.price
         ratingLabel.text = String(repeating: "⭐️", count: Int(product.rating))
 
-configureAccessibility(with: product)
+setAccessibility(product)
     }
 
-        private func configureAccessibility(with product: Product) {
+    func setAccessibility(_ product: Product) {
 
-            self.isAccessibilityElement = true
-            self.accessibilityLabel = "\(product.name), \(product.price), rated \(product.ratingAsString) stars"
-            self.accessibilityHint = "Swipe up or down to select a custom action"
-            self.accessibilityTraits = [.button]
-
-        let addToCartAction = UIAccessibilityCustomAction(name: "Add to Cart") { _ in
-            self.onAddToCart?()
-            return true
-        }
-        let wishlistAction = UIAccessibilityCustomAction(name: "Remove from Wishlist") { _ in
-            self.onWishlistRemoval?()
-            return true
-        }
-
-            self.accessibilityCustomActions = [addToCartAction, wishlistAction]
-                    }
+        self.infoStackView.isAccessibilityElement = true
+        self.infoStackView.accessibilityLabel = "\(product.name), \(product.price), rated \(product.ratingAsString) stars"
+        removeFromWishlistButton.accessibilityLabel = "Remove from Wishlist"
+        removeFromWishlistButton.accessibilityHint = "Double tap to remove from Wishlist"
+        addToCartButton.accessibilityHint = "Double tap to add to Cart"
+    }
 
     @objc private func wishlistTapped() {
         onWishlistRemoval?()
@@ -105,10 +104,5 @@ configureAccessibility(with: product)
 
     @objc private func addCartTapped() {
         onAddToCart?()
-    }
-
-    override func accessibilityActivate() -> Bool {
-        self.onAccessibilityActivate?()
-        return true
     }
 }

@@ -1,13 +1,13 @@
 //
-//  WishlistCollectionViewCellV2.swift
+//  WishlistCollectionViewCellV3.swift
 //  AxessShop
 //
-//  Created by Diogo Melo on 3/11/25.
+//  Created by Diogo Melo on 4/11/25.
 //
 
 import UIKit
 
-class WishlistCollectionViewCellV1: UICollectionViewCell {
+class WishlistCollectionViewCellV3: UICollectionViewCell {
 
     static let reuseIdentifier = "ProductCell"
 
@@ -21,7 +21,7 @@ class WishlistCollectionViewCellV1: UICollectionViewCell {
 
     var onWishlistRemoval: (() -> Void)?
     var onAddToCart: (() -> Void)?
-    var onAccessibilityActivate: (() -> Void)? // for V3 compatibility
+    var onAccessibilityActivate: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,10 +81,31 @@ class WishlistCollectionViewCellV1: UICollectionViewCell {
         ])
     }
 
-    func configure(with product: Product) {
+        func configure(with product: Product) {
         nameLabel.text = product.name
         priceLabel.text = product.price
         ratingLabel.text = String(repeating: "⭐️", count: Int(product.rating))
+
+        configureAccessibility(with: product)
+    }
+
+    private func configureAccessibility(with product: Product) {
+
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = "\(product.name), \(product.price), rated \(product.ratingAsString) stars"
+        self.accessibilityHint = "Swipe up or down to select a custom action"
+        self.accessibilityTraits = [.button]
+
+        let addToCartAction = UIAccessibilityCustomAction(name: "Add to Cart") { _ in
+            self.onAddToCart?()
+            return true
+        }
+        let wishlistAction = UIAccessibilityCustomAction(name: "Remove from Wishlist") { _ in
+            self.onWishlistRemoval?()
+            return true
+        }
+
+        self.accessibilityCustomActions = [addToCartAction, wishlistAction]
     }
 
     @objc private func wishlistTapped() {
@@ -93,5 +114,10 @@ class WishlistCollectionViewCellV1: UICollectionViewCell {
 
     @objc private func addCartTapped() {
         onAddToCart?()
+    }
+
+    override func accessibilityActivate() -> Bool {
+        self.onAccessibilityActivate?()
+        return true
     }
 }
