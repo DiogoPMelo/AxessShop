@@ -11,6 +11,9 @@ struct ProductDetailViewV3: View {
     let product: Product
     @EnvironmentObject var store: TechStore
 
+    @Environment(\.accessibilityVoiceOverEnabled) var isVoiceOverEnabled
+
+
     @State private var selectedColor = 1
     let colors: [Color] = [.black, .blue, .red, .gray]
 
@@ -47,6 +50,7 @@ struct ProductDetailViewV3: View {
                         }
                     }
                     .accessibilityElement(children: .ignore)
+                    .accessibilityAddTraits(.isStaticText)
                     .accessibilityLabel("\(product.ratingAsString) stars")
 
                     Text(product.price)
@@ -56,69 +60,61 @@ struct ProductDetailViewV3: View {
                 .padding(.horizontal)
 
                 // MARK: Color Options
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Available Colors")
-                        .font(.headline)
+                if isVoiceOverEnabled {
 
-                    HStack(spacing: 15) {
-                        ForEach(colors, id: \.self) {
-                            colorButton($0)
+                    colorOptions
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Available colors")
+                        .accessibilityValue(colors[selectedColor].description.capitalized)
+                        .accessibilityAdjustableAction { direction in
+                            switch (direction) {
+                                case .decrement:
+                                    if selectedColor > 0 { selectedColor -= 1}
+
+                                case .increment:
+                                    if selectedColor < (colors.count - 1) { selectedColor += 1}
+
+                                default:
+                                    break
+                            }
                         }
-                    }
-                }
-                .padding(.horizontal)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Available colors")
-                .accessibilityValue(colors[selectedColor].description.capitalized)
-                .accessibilityAdjustableAction { direction in
-                    switch (direction) {
-                        case .decrement:
-                            if selectedColor > 0 { selectedColor -= 1}
+                    // wasn't focusing with VO swiping in iOS18.7, just with exploring by touch
+                    //                .accessibilityRepresentation {
+                    //                    Picker("Please choose a color", selection: $selectedColor) {
+                    //                        ForEach(colors, id: \.self) {
+                    //                            Text($0.description)
+                    //                        }
+                    //                    }
+                    //                    .pickerStyle(.wheel)
+                    //                }
 
-                        case .increment:
-                            if selectedColor < (colors.count - 1) { selectedColor += 1}
+                } else {
 
-                        default:
-                            break
-                    }
+                    colorOptions
                 }
-                // wasn't focusing with VO swiping in iOS18.7, just with exploring by touch
-                //                .accessibilityRepresentation {
-                //                    Picker("Please choose a color", selection: $selectedColor) {
-                //                        ForEach(colors, id: \.self) {
-                //                            Text($0.description)
-                //                        }
-                //                    }
-                //                    .pickerStyle(.wheel)
-                //                }
 
                 // MARK: Storage Options
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Storage Options")
-                        .font(.headline)
+                if isVoiceOverEnabled {
 
-                    HStack(spacing: 15) {
-                        ForEach(storageOptions, id: \.self) {
-                            storageButton($0)
+                    StorageOptions
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Storage Options")
+                        .accessibilityValue(storageOptions[selectedStorage])
+                        .accessibilityAdjustableAction { direction in
+                            switch (direction) {
+                                case .decrement:
+                                    if selectedStorage > 0 { selectedStorage -= 1}
+
+                                case .increment:
+                                    if selectedStorage < (storageOptions.count - 1) { selectedStorage += 1}
+
+                                default:
+                                    break
+                            }
                         }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.top, 5)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Storage Options")
-                .accessibilityValue(storageOptions[selectedStorage])
-                .accessibilityAdjustableAction { direction in
-                    switch (direction) {
-                        case .decrement:
-                            if selectedStorage > 0 { selectedStorage -= 1}
+                } else {
 
-                        case .increment:
-                            if selectedStorage < (storageOptions.count - 1) { selectedStorage += 1}
-
-                        default:
-                            break
-                    }
+                    StorageOptions
                 }
 
                 // MARK: Description
@@ -199,6 +195,37 @@ struct ProductDetailViewV3: View {
     }
 
     // MARK: - Helper Views
+
+    @ViewBuilder private var colorOptions: some View {
+
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Available Colors")
+                .font(.headline)
+
+            HStack(spacing: 15) {
+                ForEach(colors, id: \.self) {
+                    colorButton($0)
+                }
+            }
+        }
+        .padding(.horizontal)
+            }
+
+    @ViewBuilder private var StorageOptions: some View {
+
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Storage Options")
+                .font(.headline)
+
+            HStack(spacing: 15) {
+                ForEach(storageOptions, id: \.self) {
+                    storageButton($0)
+                }
+            }
+        }
+        .padding(.horizontal)
+        .padding(.top, 5)
+    }
 
     @ViewBuilder private func colorButton(_ color: Color) -> some View {
         Circle()

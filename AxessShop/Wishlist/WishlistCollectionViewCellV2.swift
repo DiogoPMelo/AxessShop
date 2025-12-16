@@ -96,6 +96,8 @@ setAccessibility(product)
         removeFromWishlistButton.accessibilityLabel = "Remove from Wishlist"
         removeFromWishlistButton.accessibilityHint = "Double tap to remove from Wishlist"
         addToCartButton.accessibilityHint = "Double tap to add to Cart"
+
+//        self.accessibilityElements = [removeFromWishlistButton, infoStackView, addToCartButton]
     }
 
     @objc private func wishlistTapped() {

@@ -47,6 +47,7 @@ struct ProductDetailViewV2: View {
                         }
                     }
                     .accessibilityElement(children: .ignore)
+                    .accessibilityAddTraits(.isStaticText)
                     .accessibilityLabel("\(product.ratingAsString) stars")
 
                     Text(product.price)

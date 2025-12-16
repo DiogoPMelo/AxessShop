@@ -85,8 +85,6 @@ struct ProductCellViewV2: View {
         .accessibilityAction(named: "Add to Cart") {
             store.addToCart(product)
         }
-//        .accessibilityAction(.magicTap, {store.addToWishlist(product)})
-//        .accessibilityAction(.escape, {store.removeFromWishlist(product)})
     }
 }
 
