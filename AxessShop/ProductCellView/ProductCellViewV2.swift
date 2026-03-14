@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Accessible implementation
 struct ProductCellViewV2: View {
     let product: Product
     @EnvironmentObject var store: TechStore

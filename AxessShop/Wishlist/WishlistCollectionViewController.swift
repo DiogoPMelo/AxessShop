@@ -9,7 +9,8 @@ import UIKit
 import SwiftUI
 import Combine
 
-typealias CellView = WishlistCollectionViewCellV2
+// MARK: Accessible Version Selection
+typealias CellView = WishlistCollectionViewCellV3
 class WishlistCollectionViewController: UICollectionViewController {
 
     private let store: TechStore

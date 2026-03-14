@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductDetailView: View {
     let product: Product
     var body: some View {
+        // MARK: Accessible Version Selection
         ProductDetailViewV3(product: product)
     }
 }

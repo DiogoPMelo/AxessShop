@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Base implementation, default accessibility
 class WishlistCollectionViewCellV1: UICollectionViewCell {
 
     static let reuseIdentifier = "ProductCell"

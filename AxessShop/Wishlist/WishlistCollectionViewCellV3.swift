@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Accessibility Enhancements
 class WishlistCollectionViewCellV3: UICollectionViewCell {
 
     static let reuseIdentifier = "ProductCell"
@@ -18,6 +19,7 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
     private let addToCartButton = UIButton(type: .system)
     private let infoStackView = UIStackView()
     private let stackView = UIStackView()
+    private var product: Product!
 
     var onWishlistRemoval: (() -> Void)?
     var onAddToCart: (() -> Void)?
@@ -30,11 +32,33 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(voiceOverStatusDidChange),
+            name: UIAccessibility.voiceOverStatusDidChangeNotification,
+            object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.isAccessibilityElement = false
+        accessibilityCustomActions = nil
+
+        print(product.name)
+    }
+
+    @objc private func voiceOverStatusDidChange() {
+
+        print("mudou voiceover")
+        prepareForReuse()
+//        setAccessibility()
+    }
+
 
     private func setupViews() {
         nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
@@ -82,14 +106,33 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
     }
 
         func configure(with product: Product) {
-        nameLabel.text = product.name
+
+            self.product = product
+            assert(product != nil, "No product")
+
+            nameLabel.text = product.name
         priceLabel.text = product.price
         ratingLabel.text = String(repeating: "⭐️", count: Int(product.rating))
 
-        configureAccessibility(with: product)
+        setAccessibility()
     }
 
-    private func configureAccessibility(with product: Product) {
+    func setAccessibility() {
+
+        print("configurando a11y")
+        self.infoStackView.isAccessibilityElement = true
+        self.infoStackView.accessibilityLabel = "\(product.name), \(product.price), rated \(product.ratingAsString) stars"
+        removeFromWishlistButton.accessibilityLabel = "Remove from Wishlist"
+        removeFromWishlistButton.accessibilityHint = "Double tap to remove from Wishlist"
+        addToCartButton.accessibilityHint = "Double tap to add to Cart"
+
+        if UIAccessibility.isVoiceOverRunning {
+configureVoiceOver()
+            print("Configurou VO")
+        }
+    }
+
+    private func configureVoiceOver() {
 
         self.isAccessibilityElement = true
         self.accessibilityLabel = "\(product.name), \(product.price), rated \(product.ratingAsString) stars"

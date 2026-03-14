@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// First implementation, no accessibility care
+// Base implementation, default accessibility
 struct ProductCellViewV1: View {
     let product: Product
     @EnvironmentObject var store: TechStore

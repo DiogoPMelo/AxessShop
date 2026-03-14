@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Accessible implementation
 class WishlistCollectionViewCellV2: UICollectionViewCell {
 
     static let reuseIdentifier = "ProductCell"
@@ -96,8 +97,6 @@ setAccessibility(product)
         removeFromWishlistButton.accessibilityLabel = "Remove from Wishlist"
         removeFromWishlistButton.accessibilityHint = "Double tap to remove from Wishlist"
         addToCartButton.accessibilityHint = "Double tap to add to Cart"
-
-//        self.accessibilityElements = [removeFromWishlistButton, infoStackView, addToCartButton]
     }
 
     @objc private func wishlistTapped() {
