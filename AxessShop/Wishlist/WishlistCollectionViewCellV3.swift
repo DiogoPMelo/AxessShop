@@ -7,7 +7,7 @@
 
 import UIKit
 
-// Accessibility Enhancements
+// Enhanced Accessibility
 class WishlistCollectionViewCellV3: UICollectionViewCell {
 
     static let reuseIdentifier = "ProductCell"

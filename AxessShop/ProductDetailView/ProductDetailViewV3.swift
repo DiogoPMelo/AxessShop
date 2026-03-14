@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// Accessibility Enhancements
+// Enhanced Accessibility
 struct ProductDetailViewV3: View {
     let product: Product
     @EnvironmentObject var store: TechStore

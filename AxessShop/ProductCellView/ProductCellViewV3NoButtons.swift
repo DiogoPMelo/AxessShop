@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// Implementation with no Buttons, implemented in ProductListViewV3 for Accessibility Enhancements
+// Implementation with no Buttons, implemented in ProductListViewV3 for Enhanced Accessibility
 struct ProductCellViewV3NoButtons: View {
     let product: Product
     @EnvironmentObject var store: TechStore
