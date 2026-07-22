@@ -33,7 +33,11 @@ class WishlistCollectionViewController: UICollectionViewController {
         let layout = UICollectionViewFlowLayout()
         let padding: CGFloat = 10
         let width = (UIScreen.main.bounds.width - 3 * padding) / 2
-        layout.itemSize = CGSize(width: width, height: 200)
+        if CellView.self == WishlistCollectionViewCellV1.self {
+            layout.itemSize = CGSize(width: width, height: 200)
+        } else {
+            layout.estimatedItemSize = CGSize(width: width, height: 200)
+        }
         layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         layout.minimumLineSpacing = padding
         layout.minimumInteritemSpacing = padding

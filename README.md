@@ -5,7 +5,9 @@ This is a mock e-commerce app used for a webinar and three Axess Lab articles on
 - Full Keyboard Access
 - Voice Control
 - VoiceOver
-- With specific VoiceOver enhancements without breaking the others
+- VoiceOver-specific enhancements without compromising Voice Control or Full Keyboard Access
+
+It also demonstrates how automated accessibility audits can support regression testing—and why automated accessibility testing alone is not enough.
 
 ## App Structure
 
@@ -35,6 +37,37 @@ The versions can be switched before running the app, by searching for the `// MA
 #### Wishlist
 - **WishlistCollectionViewCellV1 / V2 / V3** – evolving Wishlist cell implementations in UIKit
 - **WishlistCollectionViewController** – uses a `typealias` to select the cell version
+
+## Accessibility Audits
+
+The UI test target includes automated accessibility audits using XCTest’s
+`performAccessibilityAudit`, introduced in iOS 17.
+
+The audit suite currently covers:
+
+- Product list
+- Product detail
+- Empty wishlist
+- Wishlist containing a product
+
+The tests navigate through the app as a user would and verify that the expected
+screen or mock product is present before starting each audit.
+
+### Testing the Different Versions
+
+To test a particular accessibility level, manually select the corresponding V1,
+V2, or V3 implementation at each `// MARK: Accessible Version Selection` before
+running the UI tests.
+
+- **V1:** Intentionally demonstrates accessibility failures. The audits expose some, but not all, of them.
+- **V2:** Expected to pass after the general accessibility improvements.
+- **V3:** Expected to pass with the additional VoiceOver enhancements.
+
+### Limitations
+
+Automated audits are useful for detecting regressions such as missing labels, insufficient contrast, clipped text, and small hit targets. They cannot evaluate whether labels are understandable, navigation order is logical, or an interaction is efficient with an assistive technology.
+
+The audits complement—not replace—manual testing with VoiceOver, Voice Control, Full Keyboard Access, and people with disabilities.
 
 ## Related Articles & Webinar
 

@@ -61,15 +61,36 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
 
 
     private func setupViews() {
-        nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        priceLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        priceLabel.textColor = .systemGreen
-        ratingLabel.font = .systemFont(ofSize: 14)
+        nameLabel.font = .preferredFont(forTextStyle: .headline)
+        nameLabel.adjustsFontForContentSizeCategory = true
+        nameLabel.numberOfLines = 0
+        nameLabel.lineBreakMode = .byWordWrapping
+
+        priceLabel.font = .preferredFont(forTextStyle: .subheadline)
+        priceLabel.adjustsFontForContentSizeCategory = true
+        priceLabel.numberOfLines = 0
+        priceLabel.lineBreakMode = .byWordWrapping
+        priceLabel.textColor = .label
+
+        ratingLabel.font = .preferredFont(forTextStyle: .subheadline)
+        ratingLabel.adjustsFontForContentSizeCategory = true
+        ratingLabel.numberOfLines = 0
+        ratingLabel.lineBreakMode = .byWordWrapping
 
         removeFromWishlistButton.setTitle("♡ Wishlist", for: .normal)
+        removeFromWishlistButton.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        removeFromWishlistButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        removeFromWishlistButton.titleLabel?.numberOfLines = 0
+        removeFromWishlistButton.titleLabel?.lineBreakMode = .byWordWrapping
+        removeFromWishlistButton.titleLabel?.textAlignment = .center
         removeFromWishlistButton.addTarget(self, action: #selector(wishlistTapped), for: .touchUpInside)
 
         addToCartButton.setTitle("Add to Cart", for: .normal)
+        addToCartButton.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        addToCartButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        addToCartButton.titleLabel?.numberOfLines = 0
+        addToCartButton.titleLabel?.lineBreakMode = .byWordWrapping
+        addToCartButton.titleLabel?.textAlignment = .center
         addToCartButton.backgroundColor = .systemBlue
         addToCartButton.tintColor = .white
         addToCartButton.layer.cornerRadius = 5
@@ -87,7 +108,7 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
         buttonsStackView.addArrangedSubview(removeFromWishlistButton)
         buttonsStackView.addArrangedSubview(addToCartButton)
 
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.spacing = 8
         stackView.addArrangedSubview(infoStackView)
         stackView.addArrangedSubview(buttonsStackView)
@@ -100,8 +121,7 @@ class WishlistCollectionViewCellV3: UICollectionViewCell {
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8),
-            addToCartButton.heightAnchor.constraint(equalToConstant: 30)
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
 

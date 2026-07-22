@@ -132,7 +132,8 @@ struct ProductDetailViewV3: View {
                     style, and seamless connectivity — experience the future in your hands.
                     """)
                     .font(.body)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
+                    .accessibilityIdentifier("product-detail-description")
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)
@@ -250,6 +251,7 @@ struct ProductDetailViewV3: View {
         .padding(10)
         .frame(width: 80)
         .background(storageOptions[selectedStorage] == label ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
+        .foregroundStyle(.primary)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .accessibilityAddTraits(storageOptions[selectedStorage] == label ? .isSelected : [])
     }

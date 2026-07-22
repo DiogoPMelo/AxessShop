@@ -24,13 +24,16 @@ struct ProductCellViewV2: View {
             VStack(alignment: .leading, spacing: 15) {
                 Text(product.name)
                     .font(.headline)
+                    .accessibilityIdentifier("product-list-name-\(product.id)")
 
                 Text(product.description)
                     .font(.subheadline)
+                    .accessibilityIdentifier("product-list-description-\(product.id)")
 
                 Text(product.price)
                     .font(.title3)
-                    .foregroundColor(.green)
+                    .foregroundStyle(.primary)
+                    .accessibilityIdentifier("product-list-price-\(product.id)")
 
                 HStack {
                     ForEach(0..<Int(product.rating.rounded())) { _ in
