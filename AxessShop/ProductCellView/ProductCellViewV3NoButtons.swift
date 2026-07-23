@@ -43,6 +43,7 @@ struct ProductCellViewV3NoButtons: View {
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Rating: \(product.ratingAsString) stars")
+                .accessibilityIdentifier("product-list-rating-\(product.id)")
             }
             Spacer()
 

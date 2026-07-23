@@ -15,18 +15,18 @@ final class AxessShopWishlistUITests: AxessShopUITestCase {
         verifyProductListContainsProduct(named: productName, in: app)
 
         // The first wishlist button belongs to the first hardcoded mock product.
-        let addToWishlistButton = app.buttons["Add to Wishlist"].firstMatch
+        let addToWishlistButton = app.buttons
+            .matching(NSPredicate(
+                format: "identifier BEGINSWITH %@",
+                "product-list-wishlist-"
+            ))
+            .firstMatch
         XCTAssertTrue(
             addToWishlistButton.waitForExistence(timeout: existenceTimeout),
             "Expected the product list to expose an Add to Wishlist button."
         )
+        XCTAssertEqual(addToWishlistButton.label, "Add to Wishlist")
         addToWishlistButton.tap()
-
-        XCTAssertTrue(
-            app.buttons["Remove from Wishlist"].firstMatch
-                .waitForExistence(timeout: existenceTimeout),
-            "Expected \(productName) to be added to the wishlist."
-        )
 
         navigateToWishlist(in: app)
         verifyWishlistContainsProduct(named: productName, in: app)

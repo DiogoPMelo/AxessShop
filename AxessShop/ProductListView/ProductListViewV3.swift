@@ -39,6 +39,7 @@ struct ProductListViewV3: View {
                                 .font(.title2)
                                 .accessibilityLabel("Add to Cart")
                         }
+                        .accessibilityIdentifier("product-list-add-to-cart-\(product.id)")
 
                         if !store.existsInWishlist(product) {
 
@@ -49,6 +50,7 @@ struct ProductListViewV3: View {
                                     .font(.title2)
                                     .accessibilityLabel("Add to Wishlist")
                             }
+                            .accessibilityIdentifier("product-list-wishlist-\(product.id)")
                         } else {
                             // Already in wishlist
                             Button(action: {
@@ -59,6 +61,7 @@ struct ProductListViewV3: View {
                                     .foregroundColor(.red)
                                     .accessibilityLabel("Remove from Wishlist")
                             }
+                            .accessibilityIdentifier("product-list-wishlist-\(product.id)")
                         }
                     }
 

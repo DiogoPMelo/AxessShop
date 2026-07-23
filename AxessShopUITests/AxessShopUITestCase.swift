@@ -11,9 +11,15 @@ class AxessShopUITestCase: XCTestCase {
 
     let productName = "iPhone 15 Pro"
     let existenceTimeout: TimeInterval = 5
+    private var originalAppearance: XCUIDevice.Appearance = .unspecified
 
     override func setUpWithError() throws {
+        originalAppearance = XCUIDevice.shared.appearance
         continueAfterFailure = false
+    }
+
+    override func tearDownWithError() throws {
+        XCUIDevice.shared.appearance = originalAppearance
     }
 
     @MainActor
@@ -21,6 +27,12 @@ class AxessShopUITestCase: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         return app
+    }
+
+    @MainActor
+    func launchApp(appearance: XCUIDevice.Appearance) -> XCUIApplication {
+        XCUIDevice.shared.appearance = appearance
+        return launchApp()
     }
 
     @MainActor
@@ -50,20 +62,21 @@ class AxessShopUITestCase: XCTestCase {
 
     @MainActor
     func ensureProductIsInWishlist(named productName: String, in app: XCUIApplication) {
-        let addToWishlistButton = app.buttons["Add to Wishlist"]
-        let removeFromWishlistButton = app.buttons["Remove from Wishlist"]
+        let wishlistButton = app.buttons["product-detail-wishlist-button"]
+        XCTAssertTrue(
+            wishlistButton.waitForExistence(timeout: existenceTimeout),
+            "Expected the product detail screen to expose a wishlist button."
+        )
 
-        if addToWishlistButton.waitForExistence(timeout: existenceTimeout) {
-            addToWishlistButton.tap()
-        } else {
-            XCTAssertTrue(
-                removeFromWishlistButton.exists,
-                "Expected the product detail screen to expose a wishlist button."
-            )
+        if !wishlistButton.isSelected {
+            wishlistButton.tap()
         }
 
+        // SwiftUI can replace the underlying node after the state change.
+        let updatedWishlistButton = app.buttons["product-detail-wishlist-button"]
         XCTAssertTrue(
-            removeFromWishlistButton.waitForExistence(timeout: existenceTimeout),
+            updatedWishlistButton.waitForExistence(timeout: existenceTimeout)
+                && updatedWishlistButton.isSelected,
             "Expected \(productName) to be added to the wishlist."
         )
     }

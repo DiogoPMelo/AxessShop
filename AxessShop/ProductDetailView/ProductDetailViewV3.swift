@@ -173,6 +173,7 @@ struct ProductDetailViewV3: View {
                                 .cornerRadius(10)
                         }
                         .accessibilityLabel("Remove from Wishlist")
+                        .accessibilityIdentifier("product-detail-wishlist-button")
                         .accessibilityAddTraits(.isSelected)
                     } else {
                         Button(action: {
@@ -186,6 +187,7 @@ struct ProductDetailViewV3: View {
                                 .cornerRadius(10)
                         }
                         .accessibilityLabel("Add to Wishlist")
+                        .accessibilityIdentifier("product-detail-wishlist-button")
                     }
                 }
                 .padding(.horizontal)
@@ -241,6 +243,7 @@ struct ProductDetailViewV3: View {
                 selectedColor = colors.firstIndex(of: color) ?? 0
             }
             .accessibilityLabel(color.description.capitalized)
+            .accessibilityIdentifier("product-detail-color-\(color.description.lowercased())")
             .accessibilityAddTraits( colors[selectedColor] == color ? [.isButton, .isSelected] : [.isButton])
     }
 
@@ -253,6 +256,7 @@ struct ProductDetailViewV3: View {
         .background(storageOptions[selectedStorage] == label ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
         .foregroundStyle(.primary)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .accessibilityIdentifier("product-detail-storage-\(label.lowercased())")
         .accessibilityAddTraits(storageOptions[selectedStorage] == label ? .isSelected : [])
     }
 }

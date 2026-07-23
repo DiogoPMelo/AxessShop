@@ -43,6 +43,7 @@ struct ProductCellViewV2: View {
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Rating: \(product.ratingAsString) stars")
+                .accessibilityIdentifier("product-list-rating-\(product.id)")
             }
             Spacer()
 
@@ -54,6 +55,7 @@ struct ProductCellViewV2: View {
                         .font(.title2)
                         .accessibilityLabel("Add to Cart")
                 }
+                .accessibilityIdentifier("product-list-add-to-cart-\(product.id)")
 
                 if !store.existsInWishlist(product) {
 
@@ -64,6 +66,7 @@ struct ProductCellViewV2: View {
                             .font(.title2)
                             .accessibilityLabel("Add to Wishlist")
                     }
+                    .accessibilityIdentifier("product-list-wishlist-\(product.id)")
                 } else {
                     // Already in wishlist
                     Button(action: {
@@ -74,6 +77,7 @@ struct ProductCellViewV2: View {
                             .foregroundColor(.red)
                             .accessibilityLabel("Remove from Wishlist")
                     }
+                    .accessibilityIdentifier("product-list-wishlist-\(product.id)")
                 }
             }
         }

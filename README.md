@@ -52,6 +52,7 @@ The audit suite currently covers:
 
 The tests navigate through the app as a user would and verify that the expected
 screen or mock product is present before starting each audit.
+Each screen is audited independently in both Light and Dark Modes.
 
 ### Testing the Different Versions
 

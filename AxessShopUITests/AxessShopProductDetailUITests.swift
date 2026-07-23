@@ -15,9 +15,14 @@ final class AxessShopProductDetailUITests: AxessShopUITestCase {
         navigateToProductDetail(named: productName, in: app)
         let productDetail = productDetailScrollView(in: app)
 
-        let oneTerabyteButton = productDetail.buttons["1TB"]
+        let oneTerabyteButton = productDetail.buttons["product-detail-storage-1tb"]
+        XCTAssertEqual(oneTerabyteButton.label, "1TB")
         scrollUntilHittable(oneTerabyteButton, in: productDetail, direction: .up)
         oneTerabyteButton.tap()
+
+        XCTAssertEqual(oneTerabyteButton.elementType, .button)
+        XCTAssertTrue(oneTerabyteButton.isSelected)
+        XCTAssertFalse(productDetail.buttons["product-detail-storage-256gb"].isSelected)
 
         XCTAssertTrue(
             productDetail.staticTexts["Your specs: Blue / 1TB"]
@@ -25,9 +30,14 @@ final class AxessShopProductDetailUITests: AxessShopUITestCase {
             "Expected the selected configuration to update to 1TB."
         )
 
-        let redButton = productDetail.buttons["Red"]
+        let redButton = productDetail.buttons["product-detail-color-red"]
+        XCTAssertEqual(redButton.label, "Red")
         scrollUntilHittable(redButton, in: productDetail, direction: .down)
         redButton.tap()
+
+        XCTAssertEqual(redButton.elementType, .button)
+        XCTAssertTrue(redButton.isSelected)
+        XCTAssertFalse(productDetail.buttons["product-detail-color-blue"].isSelected)
 
         XCTAssertTrue(
             productDetail.staticTexts["Your specs: Red / 1TB"]
@@ -42,28 +52,32 @@ final class AxessShopProductDetailUITests: AxessShopUITestCase {
         navigateToProductDetail(named: productName, in: app)
         let productDetail = productDetailScrollView(in: app)
 
-        let addToWishlistButton = productDetail.buttons["Add to Wishlist"]
-        let removeFromWishlistButton = productDetail.buttons["Remove from Wishlist"]
+        let wishlistButton = productDetail.buttons["product-detail-wishlist-button"]
 
         // Tapping a V3 list row can also trigger its wishlist button, so begin
         // this behavior check from a known, not-in-wishlist state.
-        if removeFromWishlistButton.exists {
-            scrollUntilHittable(removeFromWishlistButton, in: productDetail, direction: .up)
-            removeFromWishlistButton.tap()
+        if wishlistButton.label == "Remove from Wishlist" {
+            scrollUntilHittable(wishlistButton, in: productDetail, direction: .up)
+            wishlistButton.tap()
 
-            XCTAssertTrue(
-                addToWishlistButton.waitForExistence(timeout: existenceTimeout),
+            XCTAssertEqual(
+                wishlistButton.label,
+                "Add to Wishlist",
                 "Expected to reset \(productName) to the not-in-wishlist state."
             )
         }
 
-        scrollUntilHittable(addToWishlistButton, in: productDetail, direction: .up)
-        addToWishlistButton.tap()
+        XCTAssertEqual(wishlistButton.elementType, .button)
+        XCTAssertEqual(wishlistButton.label, "Add to Wishlist")
+        scrollUntilHittable(wishlistButton, in: productDetail, direction: .up)
+        wishlistButton.tap()
 
-        XCTAssertTrue(
-            removeFromWishlistButton.waitForExistence(timeout: existenceTimeout),
-            "Expected the wishlist button to change after adding \(productName)."
+        XCTAssertEqual(
+            wishlistButton.label,
+            "Remove from Wishlist",
+            "Expected the wishlist button label to change after adding \(productName)."
         )
+        XCTAssertTrue(wishlistButton.isSelected)
     }
 
     @MainActor
